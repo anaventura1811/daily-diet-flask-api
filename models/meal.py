@@ -1,6 +1,5 @@
-from typing import Any
 from database import db
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped
 from sqlalchemy.sql import func
 
 
