@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from database import db
 from flask_login import login_required, current_user
 from models.meal import Meal
+from datetime import datetime
 
 meal_routes = Blueprint('meal_routes', __name__)
 
@@ -75,3 +76,28 @@ def get_meal(meal_id):
         return jsonify(meal)
     return jsonify({"message": "Refeição não encontrada"}), 404
 
+
+@meal_routes.route('/meals/<int:meal_id>', methods=['PUT'])
+def update_meal(meal_id):
+    data = request.json
+    title = data.get("title")
+    description = data.get("description")
+    in_diet = data.get("in_diet")
+    meal_query = Meal.query.filter_by(
+        owner_id=current_user.id, id=meal_id).first()
+    if meal_query:
+        if in_diet:
+            meal_query.in_diet = in_diet
+        if title:
+            meal_query.title = title
+        if description:
+            meal_query.description = description
+        if in_diet or title or description:
+            meal_query.last_updated = datetime.now()
+        db.session.commit()
+        return jsonify(
+            {"message": f"Refeição {meal_query.title} atualizada com sucesso"})
+    else:
+        return jsonify({
+            "message": "Refeição não encontrada"
+        }), 404
