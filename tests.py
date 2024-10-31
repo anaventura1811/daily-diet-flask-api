@@ -31,5 +31,14 @@ def test_login_user():
     assert "message" in response_json
 
 
-def update_user():
-    pass
+def test_create_meal():
+    payload = {
+        "title": "Minha refeição",
+        "description": "Uma refeição muito deliciosa",
+        "in_diet": 1,
+    }
+    response = requests.post(f"{BASE_URL}/meals", json=payload)
+    assert response.status_code == 200
+    response_json = response.json()
+    assert "message" in response_json
+
