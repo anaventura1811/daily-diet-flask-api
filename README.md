@@ -6,7 +6,7 @@
 
 ### Autenticação de Usuário
 A API fornece rotas de autenticação que incluem:
-- **Criação de usuário**: Cria um novo usuário com email e senha criptografada.
+- **Criação de usuário**: Cria um novo usuário com username e senha criptografada.
 - **Login**: Autentica o usuário usando Flask Login.
 - **Logout**: Finaliza a sessão do usuário.
 - **Atualização de usuário**: Permite atualizar as informações do usuário.
