@@ -38,7 +38,7 @@ def login():
     username = data.get("username")
     password = data.get("password")
     if username and password:
-        user = User.query.filter_by(username.first())
+        user = User.query.filter_by(username=username).first()
         check_password = checkpw(
             password=str.encode(password),
             hashed_password=str.encode(user.password))
