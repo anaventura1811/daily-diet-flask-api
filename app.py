@@ -4,8 +4,6 @@ from models.user import User
 from routes.user import user_routes
 from routes.meals import meal_routes
 from flask_login import LoginManager
-# from flask_login import login_user, logout_user, login_required
-# from bcrypt import hashpw, checkpw, gensalt
 from dotenv import load_dotenv
 import os
 
