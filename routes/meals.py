@@ -78,16 +78,16 @@ def get_meal(meal_id):
 
 
 @meal_routes.route('/meals/<int:meal_id>', methods=['PUT'])
+@login_required
 def update_meal(meal_id):
+    meal_query = Meal.query.filter_by(
+        owner_id=current_user.id, id=meal_id).first()
     data = request.json
     title = data.get("title")
     description = data.get("description")
-    in_diet = data.get("in_diet")
-    meal_query = Meal.query.filter_by(
-        owner_id=current_user.id, id=meal_id).first()
+    in_diet = data.get("in_diet", meal_query.in_diet)
     if meal_query:
-        if in_diet:
-            meal_query.in_diet = in_diet
+        meal_query.in_diet = in_diet
         if title:
             meal_query.title = title
         if description:
@@ -101,3 +101,15 @@ def update_meal(meal_id):
         return jsonify({
             "message": "Refeição não encontrada"
         }), 404
+
+
+@meal_routes.route('/meals/<int:meal_id>', methods=['DELETE'])
+@login_required
+def delete_meal(meal_id):
+    meal = Meal.query.filter_by(
+        owner_id=current_user.id, id=meal_id).first()
+    if meal.id:
+        db.session.delete(meal)
+        db.session.commit()
+        return jsonify({"message": f"Refeição {meal_id} excluída com sucesso"})
+    return jsonify({"message": "Refeição não encontrada"}), 404
