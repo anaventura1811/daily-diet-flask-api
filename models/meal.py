@@ -21,3 +21,13 @@ class Meal(db.Model):
         server_default=func.now())
     in_diet: Mapped[bool] = db.Column(db.Boolean, unique=False, nullable=False)
     owner_id: Mapped[int] = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "created_at": self.created_at,
+            "last_updated": self.last_updated,
+            "in_diet": self.in_diet
+        }

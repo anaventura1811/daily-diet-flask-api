@@ -36,18 +36,7 @@ def create_meal():
 def get_meals():
     meals_query = Meal.query.filter_by(owner_id=current_user.id).all()
     if meals_query:
-        meals = []
-        for meal in meals_query:
-            formatted_meal = {
-              "id": meal.id,
-              "title": meal.title,
-              "description": meal.description,
-              "created_at": meal.created_at,
-              "last_updated": meal.last_updated,
-              "in_diet": meal.in_diet,
-              "owner_id": meal.owner_id,
-            }
-            meals.append(formatted_meal)
+        meals = [meal.to_dict() for meal in meals_query]
         return jsonify({
             "meals": meals,
             "total_results": len(meals),
@@ -64,16 +53,7 @@ def get_meal(meal_id):
     meal_query = Meal.query.filter_by(
         owner_id=current_user.id, id=meal_id).first()
     if meal_query:
-        meal = {
-            "title": meal_query.title,
-            "id": meal_query.id,
-            "description": meal_query.description,
-            "created_at": meal_query.created_at,
-            "last_updated": meal_query.last_updated,
-            "in_diet": meal_query.in_diet,
-            "owner_id": meal_query.owner_id
-        }
-        return jsonify(meal)
+        return jsonify(meal_query.to_dict())
     return jsonify({"message": "Refeição não encontrada"}), 404
 
 
